@@ -14,10 +14,6 @@ use PHPUnit\Framework\TestCase;
  */
 class WindTest extends TestCase
 {
-    const SPEED_KNOTS = "KT";
-    const SPEED_KILOMETERS_PER_HOUR = "KPH";
-    const SPEED_MILES_PER_HOUR = "MPH";
-
     protected $direction = 240;
 
     protected $gust = 35;
@@ -40,10 +36,10 @@ class WindTest extends TestCase
     {
         $this->segmentParser = new WindSegment;
 
-        $this->validSegment = "{$this->direction}{$this->speed}" . self::SPEED_KNOTS;
-        $this->validSegmentWithGust = "{$this->direction}{$this->speed}G{$this->gust}" . self::SPEED_KNOTS;
-        $this->validSegmentWithVariableDirection = "{$this->variableDirection}{$this->speed}" . self::SPEED_KNOTS;
-        $this->validSegmentWithVariableDirectionAndGust = "{$this->variableDirection}{$this->speed}G{$this->gust}" . self::SPEED_KNOTS;
+        $this->validSegment = "{$this->direction}{$this->speed}" . WindSegment::SPEED_KNOTS;
+        $this->validSegmentWithGust = "{$this->direction}{$this->speed}G{$this->gust}" . WindSegment::SPEED_KNOTS;
+        $this->validSegmentWithVariableDirection = "{$this->variableDirection}{$this->speed}" . WindSegment::SPEED_KNOTS;
+        $this->validSegmentWithVariableDirectionAndGust = "{$this->variableDirection}{$this->speed}G{$this->gust}" . WindSegment::SPEED_KNOTS;
     }
 
     /**
@@ -73,7 +69,7 @@ class WindTest extends TestCase
         $parsedData = $this->segmentParser->parse($this->validSegment);
 
         $this->assertEquals($this->speed, $parsedData->getSpeed());
-        $this->assertEquals(self::SPEED_KNOTS, $parsedData->getSpeedUnit());
+        $this->assertEquals(WindSegment::SPEED_KNOTS, $parsedData->getSpeedUnit());
     }
 
     public function testWindSpeedInKnotsWhenGustIsIncluded()
@@ -81,47 +77,47 @@ class WindTest extends TestCase
         $parsedData = $this->segmentParser->parse($this->validSegmentWithGust);
 
         $this->assertEquals($this->speed, $parsedData->getSpeed());
-        $this->assertEquals(self::SPEED_KNOTS, $parsedData->getSpeedUnit());
+        $this->assertEquals(WindSegment::SPEED_KNOTS, $parsedData->getSpeedUnit());
     }
 
     public function testWindSpeedInKilometersPerHour()
     {
-        $validSegmentInKph = "{$this->direction}{$this->speed}" . self::SPEED_KILOMETERS_PER_HOUR;
+        $validSegmentInKph = "{$this->direction}{$this->speed}" . WindSegment::SPEED_KILOMETRES_PER_HOUR;
 
         $parsedData = $this->segmentParser->parse($validSegmentInKph);
 
         $this->assertEquals($this->speed, $parsedData->getSpeed());
-        $this->assertEquals(self::SPEED_KILOMETERS_PER_HOUR, $parsedData->getSpeedUnit());
+        $this->assertEquals(WindSegment::SPEED_KILOMETRES_PER_HOUR, $parsedData->getSpeedUnit());
     }
 
     public function testWindSpeedInKilometersPerHourWhenGustIsIncluded()
     {
-        $validSegmentWithGustInKph = "{$this->direction}{$this->speed}G{$this->gust}" . self::SPEED_KILOMETERS_PER_HOUR;
+        $validSegmentWithGustInKph = "{$this->direction}{$this->speed}G{$this->gust}" . WindSegment::SPEED_KILOMETRES_PER_HOUR;
 
         $parsedData = $this->segmentParser->parse($validSegmentWithGustInKph);
 
         $this->assertEquals($this->speed, $parsedData->getSpeed());
-        $this->assertEquals(self::SPEED_KILOMETERS_PER_HOUR, $parsedData->getSpeedUnit());
+        $this->assertEquals(WindSegment::SPEED_KILOMETRES_PER_HOUR, $parsedData->getSpeedUnit());
     }
 
-    public function testWindSpeedInMilesPerHour()
+    public function testWindSpeedInMetresPerSecond()
     {
-        $validSegmentInMph = "{$this->direction}{$this->speed}" . self::SPEED_MILES_PER_HOUR;
+        $validSegmentInMps = "{$this->direction}{$this->speed}" . WindSegment::SPEED_METRES_PER_SECOND;
 
-        $parsedData = $this->segmentParser->parse($validSegmentInMph);
+        $parsedData = $this->segmentParser->parse($validSegmentInMps);
 
         $this->assertEquals($this->speed, $parsedData->getSpeed());
-        $this->assertEquals(self::SPEED_MILES_PER_HOUR, $parsedData->getSpeedUnit());
+        $this->assertEquals(WindSegment::SPEED_METRES_PER_SECOND, $parsedData->getSpeedUnit());
     }
 
-    public function testWindSpeedInMilesPerHourWhenGustIsIncluded()
+    public function testWindSpeedInMetresPerSecondWhenGustIsIncluded()
     {
-        $validSegmentWithGustInMph = "{$this->direction}{$this->speed}G{$this->gust}" . self::SPEED_MILES_PER_HOUR;
+        $validSegmentWithGustInMps = "{$this->direction}{$this->speed}G{$this->gust}" . WindSegment::SPEED_METRES_PER_SECOND;
 
-        $parsedData = $this->segmentParser->parse($validSegmentWithGustInMph);
+        $parsedData = $this->segmentParser->parse($validSegmentWithGustInMps);
 
         $this->assertEquals($this->speed, $parsedData->getSpeed());
-        $this->assertEquals(self::SPEED_MILES_PER_HOUR, $parsedData->getSpeedUnit());
+        $this->assertEquals(WindSegment::SPEED_METRES_PER_SECOND, $parsedData->getSpeedUnit());
     }
 
     public function testGustSpeedInKnots()
@@ -129,27 +125,27 @@ class WindTest extends TestCase
         $parsedData = $this->segmentParser->parse($this->validSegmentWithGust);
 
         $this->assertEquals($this->gust, $parsedData->getGustSpeed());
-        $this->assertEquals(self::SPEED_KNOTS, $parsedData->getSpeedUnit());
+        $this->assertEquals(WindSegment::SPEED_KNOTS, $parsedData->getSpeedUnit());
     }
 
     public function testGustSpeedInKilometersPerHour()
     {
-        $validSegmentWithGustInKph = "{$this->direction}{$this->speed}G{$this->gust}" . self::SPEED_KILOMETERS_PER_HOUR;
+        $validSegmentWithGustInKph = "{$this->direction}{$this->speed}G{$this->gust}" . WindSegment::SPEED_KILOMETRES_PER_HOUR;
 
         $parsedData = $this->segmentParser->parse($validSegmentWithGustInKph);
 
         $this->assertEquals($this->gust, $parsedData->getGustSpeed());
-        $this->assertEquals(self::SPEED_KILOMETERS_PER_HOUR, $parsedData->getSpeedUnit());
+        $this->assertEquals(WindSegment::SPEED_KILOMETRES_PER_HOUR, $parsedData->getSpeedUnit());
     }
 
-    public function testGustSpeedInMilesPerHour()
+    public function testGustSpeedInMetresPerSecond()
     {
-        $validSegmentWithGustInMph = "{$this->direction}{$this->speed}G{$this->gust}" . self::SPEED_MILES_PER_HOUR;
+        $validSegmentWithGustInMps = "{$this->direction}{$this->speed}G{$this->gust}" . WindSegment::SPEED_METRES_PER_SECOND;
 
-        $parsedData = $this->segmentParser->parse($validSegmentWithGustInMph);
+        $parsedData = $this->segmentParser->parse($validSegmentWithGustInMps);
 
         $this->assertEquals($this->gust, $parsedData->getGustSpeed());
-        $this->assertEquals(self::SPEED_MILES_PER_HOUR, $parsedData->getSpeedUnit());
+        $this->assertEquals(WindSegment::SPEED_METRES_PER_SECOND, $parsedData->getSpeedUnit());
     }
 
     /**

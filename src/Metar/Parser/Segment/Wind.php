@@ -10,8 +10,8 @@ class Wind
     const DIRECTION_VARIABLE = "VRB";
 
     const SPEED_KNOTS = "KT";
-    const SPEED_KILOMETERS_PER_HOUR = "KPH";
-    const SPEED_MILES_PER_HOUR = "MPH";
+    const SPEED_KILOMETRES_PER_HOUR = "KPH";
+    const SPEED_METRES_PER_SECOND = "MPS";
 
     protected $pattern =
         "/" .
@@ -21,7 +21,7 @@ class Wind
         // optional gust
         "(?:G(?P<gust>[0-9]{2}))?" .
         // speed units
-        "(?P<unit>" . self::SPEED_KNOTS . "|" . self::SPEED_KILOMETERS_PER_HOUR . "|" . self::SPEED_MILES_PER_HOUR . ")" .
+        "(?P<unit>" . self::SPEED_KNOTS . "|" . self::SPEED_KILOMETRES_PER_HOUR . "|" . self::SPEED_METRES_PER_SECOND . ")" .
         "/";
 
     /**
