@@ -5,10 +5,14 @@ namespace Metar\Parser\Segment;
 use Metar\Parser\Data\Segment\Wind as WindData;
 use Metar\Parser\Segment\Exception\Invalid as InvalidDataException;
 
+/**
+ * Class Wind
+ *
+ * @author Mike Smith <mail@mikegsmith.co.uk>
+ * @package Metar\Parser\Segment
+ */
 class Wind
 {
-
-
     protected $pattern =
         "/" .
         "(?P<direction>" . WindData::DIRECTION_VARIABLE . "|[0-9]{3})" .
@@ -40,7 +44,7 @@ class Wind
         } else {
             $data->setDirection((int) $matches["direction"]);
         }
-        
+
         $data->setSpeed((int) $matches["speed"]);
         $data->setSpeedUnit($matches["unit"]);
 

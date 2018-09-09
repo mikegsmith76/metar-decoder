@@ -15,22 +15,49 @@ use PHPUnit\Framework\TestCase;
  */
 class WindTest extends TestCase
 {
+    /**
+     * @var int
+     */
     protected $direction = 240;
 
+    /**
+     * @var int
+     */
     protected $gust = 35;
 
+    /**
+     * @var int
+     */
     protected $speed = 15;
 
+    /**
+     * @var string
+     */
     protected $variableDirection = "VRB";
 
+    /**
+     * @var WindSegment
+     */
     protected $segmentParser = null;
 
+    /**
+     * @var string
+     */
     protected $validSegment = "";
 
+    /**
+     * @var string
+     */
     protected $validSegmentWithGust = "";
 
+    /**
+     * @var string
+     */
     protected $validSegmentWithVariableDirection = "";
 
+    /**
+     * @var string
+     */
     protected $validSegmentWithVariableDirectionAndGust = "";
 
     public function setUp()

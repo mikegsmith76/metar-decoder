@@ -15,6 +15,9 @@ use PHPUnit\Framework\TestCase;
  */
 class CloudLayerTest extends TestCase
 {
+    /**
+     * @var CloudLayerSegment
+     */
     protected $segmentParser = null;
 
     public function setUp()
