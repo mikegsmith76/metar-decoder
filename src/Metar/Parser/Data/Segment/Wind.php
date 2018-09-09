@@ -10,6 +10,12 @@ namespace Metar\Parser\Data\Segment;
  */
 class Wind
 {
+    const DIRECTION_VARIABLE = "VRB";
+
+    const SPEED_KNOTS = "KT";
+    const SPEED_KILOMETRES_PER_HOUR = "KPH";
+    const SPEED_METRES_PER_SECOND = "MPS";
+
     /**
      * @var int
      */
