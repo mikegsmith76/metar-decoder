@@ -2,13 +2,15 @@
 
 namespace Metar\Parser\Data\Segment;
 
+use Metar\Parser\Data\Segment;
+
 /**
  * Class Temperature
  *
  * @author Mike Smith <mail@mikegsmith.co.uk>
  * @package Metar\Parser\Data\Segment
  */
-class Temperature
+class Temperature extends Segment
 {
     /**
      * @var int

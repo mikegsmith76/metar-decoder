@@ -3,6 +3,7 @@
 namespace Metar\Parser\Segment;
 
 use Metar\Parser\Data\Segment\Issued as IssuedData;
+use Metar\Parser\Segment;
 use Metar\Parser\Segment\Exception\Invalid as InvalidDataException;
 
 /**
@@ -11,7 +12,7 @@ use Metar\Parser\Segment\Exception\Invalid as InvalidDataException;
  * @author Mike Smith <mail@mikegsmith.co.uk>
  * @package Metar\Parser\Segment
  */
-class Issued
+class Issued implements Segment
 {
     /**
      * @var string
@@ -26,13 +27,13 @@ class Issued
         . "/";
 
     /**
-     * @param $segment
+     * @param string $toParse
      * @return IssuedData
      * @throws InvalidDataException
      */
-    public function parse($segment) : IssuedData
+    public function parse(string $toParse) : IssuedData
     {
-        if (false === preg_match($this->pattern, $segment, $matches) || empty($matches)) {
+        if (false === preg_match($this->pattern, $toParse, $matches) || empty($matches)) {
             throw new InvalidDataException;
         }
 

@@ -2,13 +2,15 @@
 
 namespace Metar\Parser\Data\Segment;
 
+use Metar\Parser\Data\Segment;
+
 /**
  * Class CloudLayer
  *
  * @author Mike Smith <mail@mikegsmith.co.uk>
  * @package Metar\Parser\Data\Segment
  */
-class CloudLayer
+class CloudLayer extends Segment
 {
     const COVERAGE_NONE = "SKC";
     const COVERAGE_FEW = "FEW";

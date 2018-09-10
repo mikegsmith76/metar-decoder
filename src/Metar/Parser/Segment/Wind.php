@@ -3,6 +3,7 @@
 namespace Metar\Parser\Segment;
 
 use Metar\Parser\Data\Segment\Wind as WindData;
+use Metar\Parser\Segment;
 use Metar\Parser\Segment\Exception\Invalid as InvalidDataException;
 
 /**
@@ -11,7 +12,7 @@ use Metar\Parser\Segment\Exception\Invalid as InvalidDataException;
  * @author Mike Smith <mail@mikegsmith.co.uk>
  * @package Metar\Parser\Segment
  */
-class Wind
+class Wind implements Segment
 {
     protected $pattern =
         "/" .
@@ -25,15 +26,15 @@ class Wind
         "/";
 
     /**
-     * @param $segment
+     * @param string $toParse
      * @return WindData
      * @throws InvalidDataException
      */
-    public function parse($segment) : WindData
+    public function parse(string $toParse) : WindData
     {
         $matches = [];
 
-        if (false === preg_match($this->pattern, $segment, $matches) || empty($matches)) {
+        if (false === preg_match($this->pattern, $toParse, $matches) || empty($matches)) {
             throw new InvalidDataException;
         }
 

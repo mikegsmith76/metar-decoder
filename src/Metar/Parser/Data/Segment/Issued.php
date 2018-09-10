@@ -2,13 +2,15 @@
 
 namespace Metar\Parser\Data\Segment;
 
+use Metar\Parser\Data\Segment;
+
 /**
  * Class Issued
  *
  * @author Mike Smith <mail@mikegsmith.co.uk>
  * @package Metar\Parser\Data\Segment
  */
-class Issued
+class Issued extends Segment
 {
     /**
      * @var int

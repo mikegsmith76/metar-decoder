@@ -3,6 +3,7 @@
 namespace Metar\Parser\Segment;
 
 use Metar\Parser\Data\Segment\Temperature as TemperatureData;
+use Metar\Parser\Segment;
 use Metar\Parser\Segment\Exception\Invalid as InvalidDataException;
 
 /**
@@ -11,7 +12,7 @@ use Metar\Parser\Segment\Exception\Invalid as InvalidDataException;
  * @author Mike Smith <mail@mikegsmith.co.uk>
  * @package Metar\Parser\Segment
  */
-class Temperature
+class Temperature implements Segment
 {
     const SIGN_MODIFIER = "M";
 
@@ -27,15 +28,15 @@ class Temperature
         . "/";
 
     /**
-     * @param $segment
+     * @param string $toParse
      * @return TemperatureData
      * @throws InvalidDataException
      */
-    public function parse($segment) : TemperatureData
+    public function parse(string $toParse) : TemperatureData
     {
         $matches = [];
 
-        if (false === preg_match($this->pattern, $segment, $matches) || empty($matches)) {
+        if (false === preg_match($this->pattern, $toParse, $matches) || empty($matches)) {
             throw new InvalidDataException;
         }
 

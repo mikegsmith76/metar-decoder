@@ -3,6 +3,7 @@
 namespace Metar\Parser\Segment;
 
 use Metar\Parser\Data\Segment\CloudLayer as CloudLayerData;
+use Metar\Parser\Segment;
 use Metar\Parser\Segment\Exception\Invalid as InvalidDataException;
 
 /**
@@ -11,7 +12,7 @@ use Metar\Parser\Segment\Exception\Invalid as InvalidDataException;
  * @author Mike Smith <mail@mikegsmith.co.uk>
  * @package Metar\Parser\Segment
  */
-class CloudLayer
+class CloudLayer implements Segment
 {
     const HEIGHT_TO_FEET = 100;
 
@@ -31,13 +32,13 @@ class CloudLayer
         . "/";
 
     /**
-     * @param $segment
+     * @param string $toParse
      * @return CloudLayerData
      * @throws InvalidDataException
      */
-    public function parse($segment) : CloudLayerData
+    public function parse(string $toParse) : CloudLayerData
     {
-        if (false === preg_match($this->pattern, $segment, $matches) || empty($matches)) {
+        if (false === preg_match($this->pattern, $toParse, $matches) || empty($matches)) {
             throw new InvalidDataException;
         }
 

@@ -2,13 +2,15 @@
 
 namespace Metar\Parser\Data\Segment;
 
+use Metar\Parser\Data\Segment;
+
 /**
  * Class Wind
  *
  * @author Mike Smith <mail@mikegsmith.co.uk>
  * @package Metar\Parser\Data\Segment
  */
-class Wind
+class Wind extends Segment
 {
     const DIRECTION_VARIABLE = "VRB";
 

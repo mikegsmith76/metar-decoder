@@ -2,13 +2,15 @@
 
 namespace Metar\Parser\Data\Segment;
 
+use Metar\Parser\Data\Segment;
+
 /**
  * Class Airfield
  *
  * @author Mike Smith <mail@mikegsmith.co.uk>
  * @package Metar\Parser\Data\Segment
  */
-class Airfield
+class Airfield extends Segment
 {
     /**
      * @var string

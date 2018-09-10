@@ -3,6 +3,7 @@
 namespace Metar\Parser\Segment;
 
 use Metar\Parser\Data\Segment\Airfield as AirfieldData;
+use Metar\Parser\Segment;
 use Metar\Parser\Segment\Exception\Invalid as InvalidDataException;
 
 /**
@@ -11,7 +12,7 @@ use Metar\Parser\Segment\Exception\Invalid as InvalidDataException;
  * @author Mike Smith <mail@mikegsmith.co.uk>
  * @package Metar\Parser\Segment
  */
-class Airfield
+class Airfield implements Segment
 {
     /**
      * @var string
