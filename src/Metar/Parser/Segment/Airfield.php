@@ -3,8 +3,6 @@
 namespace Metar\Parser\Segment;
 
 use Metar\Parser\Data\Segment\Airfield as AirfieldData;
-use Metar\Parser\Segment;
-use Metar\Parser\Segment\Exception\Invalid as InvalidDataException;
 
 /**
  * Class Airfield
@@ -12,28 +10,23 @@ use Metar\Parser\Segment\Exception\Invalid as InvalidDataException;
  * @author Mike Smith <mail@mikegsmith.co.uk>
  * @package Metar\Parser\Segment
  */
-class Airfield implements Segment
+class Airfield extends BaseSegment
 {
     /**
      * @var string
      */
-    protected $pattern = "/(?<code>[A-Z]{4})/";
+    protected $extractRegex = "/(?<code>[A-Z]{4})/";
 
     /**
-     * @param string $segment
+     * @param array $data
      * @return AirfieldData
-     * @throws InvalidDataException
      */
-    public function parse(string $segment) : AirfieldData
+    public function populateDataContainer(array $data) /*: AirfieldData*/
     {
-        if (false === preg_match($this->pattern, $segment, $matches) || empty($matches)) {
-            throw new InvalidDataException;
-        }
+        $dataContainer = new AirfieldData;
 
-        $data = new AirfieldData;
+        $dataContainer->setCode($data["code"]);
 
-        $data->setCode($matches["code"]);
-
-        return $data;
+        return $dataContainer;
     }
 }

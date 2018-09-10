@@ -3,8 +3,6 @@
 namespace Metar\Parser\Segment;
 
 use Metar\Parser\Data\Segment\Wind as WindData;
-use Metar\Parser\Segment;
-use Metar\Parser\Segment\Exception\Invalid as InvalidDataException;
 
 /**
  * Class Wind
@@ -12,9 +10,12 @@ use Metar\Parser\Segment\Exception\Invalid as InvalidDataException;
  * @author Mike Smith <mail@mikegsmith.co.uk>
  * @package Metar\Parser\Segment
  */
-class Wind implements Segment
+class Wind extends BaseSegment
 {
-    protected $pattern =
+    /**
+     * @var string
+     */
+    protected $extractRegex =
         "/" .
         "(?P<direction>" . WindData::DIRECTION_VARIABLE . "|[0-9]{3})" .
         // speed
@@ -26,31 +27,25 @@ class Wind implements Segment
         "/";
 
     /**
-     * @param string $toParse
+     * @param array $data
      * @return WindData
-     * @throws InvalidDataException
      */
-    public function parse(string $toParse) : WindData
+    public function populateDataContainer(array $data) /*: WindData*/
     {
-        $matches = [];
+        $dataContainer = new WindData;
 
-        if (false === preg_match($this->pattern, $toParse, $matches) || empty($matches)) {
-            throw new InvalidDataException;
-        }
-
-        $data = new WindData;
-
-        if (WindData::DIRECTION_VARIABLE === $matches["direction"]) {
-            $data->setHasFixedDirection(false);
+        if (WindData::DIRECTION_VARIABLE === $data["direction"]) {
+            $dataContainer->setHasFixedDirection(false);
         } else {
-            $data->setDirection((int) $matches["direction"]);
+            $dataContainer->setDirection((int) $data["direction"]);
         }
 
-        $data->setSpeed((int) $matches["speed"]);
-        $data->setSpeedUnit($matches["unit"]);
+        $dataContainer->setSpeed((int) $data["speed"]);
+        $dataContainer->setSpeedUnit($data["unit"]);
 
-        $gustSpeed = isset($matches['gust']) ? (int) $matches["gust"] : 0;
-        $data->setGustSpeed($gustSpeed);
-        return $data;
+        $gustSpeed = isset($data['gust']) ? (int) $data["gust"] : 0;
+        $dataContainer->setGustSpeed($gustSpeed);
+
+        return $dataContainer;
     }
 }

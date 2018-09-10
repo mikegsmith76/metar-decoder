@@ -3,8 +3,6 @@
 namespace Metar\Parser\Segment;
 
 use Metar\Parser\Data\Segment\CloudLayer as CloudLayerData;
-use Metar\Parser\Segment;
-use Metar\Parser\Segment\Exception\Invalid as InvalidDataException;
 
 /**
  * Class CloudLayer
@@ -12,11 +10,14 @@ use Metar\Parser\Segment\Exception\Invalid as InvalidDataException;
  * @author Mike Smith <mail@mikegsmith.co.uk>
  * @package Metar\Parser\Segment
  */
-class CloudLayer implements Segment
+class CloudLayer extends BaseSegment
 {
     const HEIGHT_TO_FEET = 100;
 
-    protected $pattern = "/"
+    /**
+     * @var string
+     */
+    protected $extractRegex = "/"
         . "(?<coverage>"
             . CloudLayerData::COVERAGE_NONE . "|"
             . CloudLayerData::COVERAGE_FEW . "|"
@@ -31,25 +32,21 @@ class CloudLayer implements Segment
         . ")?"
         . "/";
 
+
     /**
-     * @param string $toParse
+     * @param array $data
      * @return CloudLayerData
-     * @throws InvalidDataException
      */
-    public function parse(string $toParse) : CloudLayerData
+    public function populateDataContainer(array $data) /*: CloudLayerData*/
     {
-        if (false === preg_match($this->pattern, $toParse, $matches) || empty($matches)) {
-            throw new InvalidDataException;
-        }
+        $dataContainer = new CloudLayerData;
 
-        $data = new CloudLayerData;
+        $dataContainer->setCoverage($data["coverage"]);
+        $dataContainer->setHeightInFeet((int) $data["height"] * self::HEIGHT_TO_FEET);
 
-        $data->setCoverage($matches["coverage"]);
-        $data->setHeightInFeet((int) $matches["height"] * self::HEIGHT_TO_FEET);
+        $type = isset($data["type"]) ? $data["type"] : "";
+        $dataContainer->setType($type);
 
-        $type = isset($matches["type"]) ? $matches["type"] : "";
-        $data->setType($type);
-
-        return $data;
+        return $dataContainer;
     }
 }

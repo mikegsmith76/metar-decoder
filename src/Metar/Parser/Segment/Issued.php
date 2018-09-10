@@ -3,8 +3,6 @@
 namespace Metar\Parser\Segment;
 
 use Metar\Parser\Data\Segment\Issued as IssuedData;
-use Metar\Parser\Segment;
-use Metar\Parser\Segment\Exception\Invalid as InvalidDataException;
 
 /**
  * Class Issued
@@ -12,14 +10,14 @@ use Metar\Parser\Segment\Exception\Invalid as InvalidDataException;
  * @author Mike Smith <mail@mikegsmith.co.uk>
  * @package Metar\Parser\Segment
  */
-class Issued implements Segment
+class Issued extends BaseSegment
 {
     /**
      * @var string
      *
      * Example 021950Z
      */
-    protected $pattern = "/"
+    protected $extractRegex = "/"
         . "(?<day_of_month>[0-9]{2})"
         . "(?<hour>[0-9]{2})"
         . "(?<minute>[0-9]{2})"
@@ -27,22 +25,17 @@ class Issued implements Segment
         . "/";
 
     /**
-     * @param string $toParse
+     * @param array $data
      * @return IssuedData
-     * @throws InvalidDataException
      */
-    public function parse(string $toParse) : IssuedData
+    public function populateDataContainer(array $data) /*: IssuedData*/
     {
-        if (false === preg_match($this->pattern, $toParse, $matches) || empty($matches)) {
-            throw new InvalidDataException;
-        }
+        $dataContainer = new IssuedData;
 
-        $data = new IssuedData;
+        $dataContainer->setDayOfMonth($data["day_of_month"]);
+        $dataContainer->setHour($data["hour"]);
+        $dataContainer->setMinute($data["minute"]);
 
-        $data->setDayOfMonth($matches["day_of_month"]);
-        $data->setHour($matches["hour"]);
-        $data->setMinute($matches["minute"]);
-
-        return $data;
+        return $dataContainer;
     }
 }

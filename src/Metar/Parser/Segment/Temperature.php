@@ -3,8 +3,6 @@
 namespace Metar\Parser\Segment;
 
 use Metar\Parser\Data\Segment\Temperature as TemperatureData;
-use Metar\Parser\Segment;
-use Metar\Parser\Segment\Exception\Invalid as InvalidDataException;
 
 /**
  * Class Temperature
@@ -12,14 +10,14 @@ use Metar\Parser\Segment\Exception\Invalid as InvalidDataException;
  * @author Mike Smith <mail@mikegsmith.co.uk>
  * @package Metar\Parser\Segment
  */
-class Temperature implements Segment
+class Temperature extends BaseSegment
 {
     const SIGN_MODIFIER = "M";
 
     /**
      * @var string
      */
-    protected $pattern = "/"
+    protected $extractRegex = "/"
         . "(?<air_temp_sign>" . self::SIGN_MODIFIER . ")?"
         . "(?<air_temp>[0-9]{2})"
         . "\/"
@@ -28,26 +26,19 @@ class Temperature implements Segment
         . "/";
 
     /**
-     * @param string $toParse
+     * @param array $data
      * @return TemperatureData
-     * @throws InvalidDataException
      */
-    public function parse(string $toParse) : TemperatureData
+    public function populateDataContainer(array $data) /*: TemperatureData*/
     {
-        $matches = [];
+        $airTempSign = isset($data["air_temp_sign"]) && self::SIGN_MODIFIER === $data["air_temp_sign"] ? -1 : 1;
+        $dewPointTempSign = isset($data["dew_point_temp_sign"]) && self::SIGN_MODIFIER === $data["dew_point_temp_sign"] ? -1 : 1;
 
-        if (false === preg_match($this->pattern, $toParse, $matches) || empty($matches)) {
-            throw new InvalidDataException;
-        }
+        $dataContainer = new TemperatureData;
 
-        $airTempSign = isset($matches["air_temp_sign"]) && self::SIGN_MODIFIER === $matches["air_temp_sign"] ? -1 : 1;
-        $dewPointTempSign = isset($matches["dew_point_temp_sign"]) && self::SIGN_MODIFIER === $matches["dew_point_temp_sign"] ? -1 : 1;
+        $dataContainer->setAirInCelsius((int) $data["air_temp"] * $airTempSign);
+        $dataContainer->setDewPointInCelsius((int) $data["dew_point_temp"] * $dewPointTempSign);
 
-        $data = new TemperatureData;
-
-        $data->setAirInCelsius((int) $matches["air_temp"] * $airTempSign);
-        $data->setDewPointInCelsius((int) $matches["dew_point_temp"] * $dewPointTempSign);
-
-        return $data;
+        return $dataContainer;
     }
 }

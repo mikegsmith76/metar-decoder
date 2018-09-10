@@ -3,8 +3,6 @@
 namespace Metar\Parser\Segment;
 
 use Metar\Parser\Data\Segment\Visibility as VisibilityData;
-use Metar\Parser\Segment;
-use Metar\Parser\Segment\Exception\Invalid as InvalidDataException;
 
 /**
  * Class Visibility
@@ -12,36 +10,29 @@ use Metar\Parser\Segment\Exception\Invalid as InvalidDataException;
  * @author Mike Smith <mail@mikegsmith.co.uk> *
  * @package Metar\Parser\Segment
  */
-class Visibility implements Segment
+class Visibility extends BaseSegment
 {
     /**
      * @var string
      */
-    protected $pattern = "/"
+    protected $extractRegex = "/"
         . "(?<visibility>[0-9]{4})"
         . "(?<direction>[A-Z]{2})?"
         . "/";
 
     /**
-     * @param string $toParse
+     * @param array $data
      * @return VisibilityData
-     * @throws InvalidDataException
      */
-    public function parse(string $toParse) : VisibilityData
+    public function populateDataContainer(array $data) /*: VisibilityData*/
     {
-        $matches = [];
+        $dataContainer = new VisibilityData;
 
-        if (false === preg_match($this->pattern, $segment, $matches) || empty($matches)) {
-            throw new InvalidDataException;
-        }
+        $dataContainer->setHorizontalInMetres((int) $data["visibility"]);
 
-        $data = new VisibilityData;
+        $direction = isset($data['direction']) ? $data['direction'] : '';
+        $dataContainer->setDirection($direction);
 
-        $data->setHorizontalInMetres((int) $matches["visibility"]);
-
-        $direction = isset($matches['direction']) ? $matches['direction'] : '';
-        $data->setDirection($direction);
-
-        return $data;
+        return $dataContainer;
     }
 }
